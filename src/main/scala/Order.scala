@@ -1,5 +1,3 @@
-package com.exchange
-
 import BuySell.BuySell
 
 object BuySell extends Enumeration {

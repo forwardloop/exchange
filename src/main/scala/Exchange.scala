@@ -1,5 +1,3 @@
-package com.exchange
-
 import BuySell._
 
 class Exchange(var openOrders: List[Order] = Nil, var executedOrders: List[Order] = Nil) {

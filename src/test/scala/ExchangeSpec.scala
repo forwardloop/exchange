@@ -1,5 +1,3 @@
-package com.exchange
-
 import org.specs2.Specification
 
 class ExchangeSpec extends Specification {
