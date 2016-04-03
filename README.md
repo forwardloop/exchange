@@ -10,6 +10,8 @@ This Exchange coding solution has a standard Scala project layout:
 
 * `src/test/scala/ExchangeSpec.scala` contains specification and unit tests (Specs2)
 
+* `src/test/scala/ExampleSpec.scala` validates against the example provided with instruction
+
 Point 1 of the assignment is implemented in 
 
 ```
