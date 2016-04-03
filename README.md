@@ -6,7 +6,7 @@
 
 This Exchange coding solution has a standard Scala project layout:
 
-* `src/main/scala/Exchange.scala` contains exchange implementation
+* `src/main/scala/Exchange.scala` contains implementation of the exchange
 
 * `src/test/scala/ExchangeSpec.scala` contains specification and unit tests (Specs2)
 
