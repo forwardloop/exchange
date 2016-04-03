@@ -67,37 +67,37 @@ class ExchangeSpec extends Specification {
   def e4 = {
     val o1 = Order(1, Buy, Ric1, QtyOne, 1.0, Usr1)
     val o2 = Order(2, Sell, Ric1, QtyOne, 1.0, Usr2)
-    Exchange.matchOrder(o1, o2) must beTrue
+    o1.matchOrder(o2) must beTrue
   }
 
   def e7 = {
     val o1 = Order(1, Buy, Ric1, QtyOne, 1.0, Usr1)
     val o2 = Order(2, Buy, Ric1, QtyOne, 1.0, Usr2)
-    Exchange.matchOrder(o1, o2) must beFalse
+    o1.matchOrder(o2) must beFalse
   }
 
   def e5 = {
     val o1 = Order(1, Buy, Ric1, QtyOne, 1.0, Usr1)
     val o2 = Order(2, Sell, "ricOther", QtyOne, 1.0, Usr2)
-    Exchange.matchOrder(o1, o2) must beFalse
+    o1.matchOrder(o2) must beFalse
   }
 
   def e9 = {
     val o1 = Order(1, Buy, Ric1, QtyOne, 1.0, Usr1)
     val o2 = Order(2, Sell, Ric1, 2, 1.0, Usr2)
-    Exchange.matchOrder(o1, o2) must beFalse
+    o1.matchOrder(o2) must beFalse
   }
 
   def e6 = {
     val o1 = Order(1, Buy, Ric1, QtyOne, 2.0, Usr1)
     val o2 = Order(2, Sell, Ric1, QtyOne, 1.0, Usr1)
-    Exchange.matchOrder(o1, o2) must beTrue
+    o1.matchOrder(o2) must beTrue
   }
 
   def e10 = {
     val o1 = Order(1, Buy, Ric1, QtyOne, 1.0, Usr1)
     val o2 = Order(2, Sell, Ric1, QtyOne, 2.0, Usr1)
-    Exchange.matchOrder(o1, o2) must beFalse
+    o1.matchOrder(o2) must beFalse
   }
 
   def e11 = {

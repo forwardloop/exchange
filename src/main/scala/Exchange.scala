@@ -12,18 +12,6 @@ object Exchange {
       case None => stock.copy(openOrders = order :: stock.openOrders)
     }
   }
-
-  def matchOrder(o1: Order, o2: Order): Boolean = {
-    val (sellPrice, buyPrice) = o1.buySell match {
-      case Buy => (o2.price, o1.price)
-      case Sell => (o1.price, o2.price)
-    }
-
-    o1.buySell != o2.buySell &&
-      o1.qty == o2.qty &&
-      o1.ric == o2.ric &&
-      sellPrice <= buyPrice
-  }
 }
 
 case class Exchange(openOrders: List[Order] = Nil, executedOrders: List[Order] = Nil) {
@@ -35,7 +23,7 @@ case class Exchange(openOrders: List[Order] = Nil, executedOrders: List[Order] =
       case Sell => o1.price <= o2.price
     }
 
-    openOrders.filter(openOrder => Exchange.matchOrder(order, openOrder))
+    openOrders.filter(openOrder => order.matchOrder(openOrder))
       .sortWith(sort)
       .headOption
   }
