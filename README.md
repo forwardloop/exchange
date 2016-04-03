@@ -6,19 +6,22 @@
 
 This Exchange coding solution has a standard Scala project layout:
 
-* `src/main/scala/Exchange.scala` contains implementation based on tail recursive functions
+* `src/main/scala/Exchange.scala` contains exchange implementation
 
-* `src/test/scala/ExchangeSpec.scala` contains standard specification and unit tests (Specs2)
+* `src/test/scala/ExchangeSpec.scala` contains specification and unit tests (Specs2)
 
-The algorithm consists of a function `findPalindromes` which searches for palindromes
-starting from the length of the input string, and then recursively repeating
-the search for shorter palindromes. It uses a helper function `findPalindromesWithLength`,
-which recursively searches for unique palindromes of a given length.
-
-Another function `isPalindrome` evaluates if a string is a palindrome. In this evaluation
-it ignores some punctuation, capital letters and white spaces, so that strings like `No 'x' in Nixon`
-are valid palindromes in my programme.
-
+Point 1 of the assignment is implemented in `addOrder(stock: Exchange, order: Order): Exchange` function 
+that returns a new exchange with an updated order stock.  
+ 
+Functionality specified in points 2-4 is available through functions on the `Exchange` case class:
+ 
+``` 
+   def openInterest(ric: String, buySell: Direction): Map[BigDecimal, Int] 
+   
+   def avgExecutionPrice(ric: String): BigDecimal
+     
+   def executedQuantity(ric: String, usr: String): Int   
+```
 
 ## How To Compile
 
