@@ -1,5 +1,31 @@
 import Direction._
 
+object Exchange {
+
+  def addOrder(stock: Stock, order: Order): Stock = {
+    stock.findMatch(order) match {
+      case Some(matchedOrder) => {
+        val openOrders = stock.openOrders.filter(_.id != matchedOrder.id)
+        val executedOrders = order :: matchedOrder.copy(price = order.price) :: stock.executedOrders
+        Stock(openOrders, executedOrders)
+      }
+      case None => stock.copy(openOrders = order :: stock.openOrders)
+    }
+  }
+
+  def matchOrder(o1: Order, o2: Order): Boolean = {
+    val (sellPrice, buyPrice) = o1.buySell match {
+      case Buy => (o2.price, o1.price)
+      case Sell => (o1.price, o2.price)
+    }
+
+    o1.buySell != o2.buySell &&
+      o1.qty == o2.qty &&
+      o1.ric == o2.ric &&
+      sellPrice <= buyPrice
+  }
+}
+
 case class Stock(openOrders: List[Order] = Nil, executedOrders: List[Order] = Nil) {
 
   def findMatch(order: Order): Option[Order] = {
@@ -36,32 +62,5 @@ case class Stock(openOrders: List[Order] = Nil, executedOrders: List[Order] = Ni
         case Sell => -order.qty
       }
     }.sum
-  }
-}
-
-object Exchange {
-
-  def addOrder(stock: Stock, order: Order): Stock = {
-    stock.findMatch(order) match {
-      case Some(matchedOrder) => {
-        val openOrders = stock.openOrders.filter(_.id != matchedOrder.id)
-        var executedOrders = order :: stock.executedOrders
-        executedOrders = matchedOrder.copy(price = order.price) :: executedOrders
-        Stock(openOrders, executedOrders)
-      }
-      case None => stock.copy(openOrders = order :: stock.openOrders)
-    }
-  }
-
-  def matchOrder(o1: Order, o2: Order): Boolean = {
-    val (sellPrice, buyPrice) = o1.buySell match {
-      case Buy => (o2.price, o1.price)
-      case Sell => (o1.price, o2.price)
-    }
-
-    o1.buySell != o2.buySell &&
-      o1.qty == o2.qty &&
-      o1.ric == o2.ric &&
-      sellPrice <= buyPrice
   }
 }
