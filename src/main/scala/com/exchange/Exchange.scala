@@ -18,8 +18,8 @@ class Exchange(var openOrders: List[Order] = Nil, var executedOrders: List[Order
 
   def matchOrder(o1: Order, o2: Order): Boolean = {
     val (sellPrice, buyPrice) = o1.buySell match {
-      case Sell => (o1.price, o2.price)
       case Buy => (o2.price, o1.price)
+      case Sell => (o1.price, o2.price)
     }
 
     o1.buySell != o2.buySell &&
@@ -31,8 +31,8 @@ class Exchange(var openOrders: List[Order] = Nil, var executedOrders: List[Order
   def findMatch(order: Order): Option[Order] = {
 
     def sort(o1: Order, o2: Order) = o1.buySell match {
-      case Sell => o1.price <= o2.price
       case Buy => o1.price >= o2.price
+      case Sell => o1.price <= o2.price
     }
 
     openOrders.filter(openOrder => matchOrder(order, openOrder))
@@ -47,15 +47,20 @@ class Exchange(var openOrders: List[Order] = Nil, var executedOrders: List[Order
   }
 
   def avgExecPrice(ric: String): BigDecimal = {
-    val orders = executedOrders.filter(_.ric == ric)
-    val qtySum = orders.map(_.qty).sum
-    val priceTot = orders.map(o => o.qty * o.price).sum
-    priceTot / qtySum
+    val execOrdersRic = executedOrders.filter(_.ric == ric)
+    val qtyTotal = execOrdersRic.map(_.qty).sum
+    val priceTotal = execOrdersRic.map(o => o.qty * o.price).sum
+    priceTotal / qtyTotal
   }
 
   def execQty(ric: String, usr: String): Int = {
-    val orders = executedOrders.filter(o => o.ric == ric && o.usr == usr)
-    val qty = orders.map(o => if (o.buySell == BuySell.Sell) (-o.qty) else o.qty)
+    val execOrdersRicUsr = executedOrders.filter(o => o.ric == ric && o.usr == usr)
+    val qty = execOrdersRicUsr.map { order =>
+      order.buySell match {
+        case Buy => order.qty
+        case Sell => -order.qty
+      }
+    }
     qty.sum
   }
 }
