@@ -176,7 +176,7 @@ class ExchangeSpec extends Specification {
     val exch = new Exchange(List(o1, o2))
     exch.addOrder(Order(3, BuySell.Buy, ric1, qtyOne, 3.0, usr2))
     exch.addOrder(Order(4, BuySell.Buy, ric1, 2, 1.0, usr1))
-    exch.execQty(ric1, usr1) must beEqualTo(1)
+    exch.totalExecQty(ric1, usr1) must beEqualTo(1)
   }
 
   def e19 = {
@@ -185,6 +185,6 @@ class ExchangeSpec extends Specification {
     val exch = new Exchange(List(o1, o2))
     exch.addOrder(Order(3, BuySell.Buy, ric1, qtyOne, 3.0, usr2))
     exch.addOrder(Order(4, BuySell.Buy, ric1, 2, 1.0, usr1))
-    exch.execQty(ric1, usr2) must beEqualTo(-1)
+    exch.totalExecQty(ric1, usr2) must beEqualTo(-1)
   }
 }

@@ -41,7 +41,7 @@ class Exchange(var openOrders: List[Order] = Nil, var executedOrders: List[Order
   }
 
   def openInterest(ric: String, buySell: BuySell): Map[BigDecimal, Int] = {
-    val orders = openOrders.filter(o => (o.buySell == buySell && o.ric == ric))
+    val orders = openOrders.filter(o => o.buySell == buySell && o.ric == ric)
     val groupedByPrice = orders.groupBy(_.price)
     groupedByPrice.map(t => (t._1, t._2.foldLeft(0)((a, order) => a + order.qty)))
   }
@@ -53,14 +53,13 @@ class Exchange(var openOrders: List[Order] = Nil, var executedOrders: List[Order
     priceTotal / qtyTotal
   }
 
-  def execQty(ric: String, usr: String): Int = {
+  def totalExecQty(ric: String, usr: String): Int = {
     val execOrdersRicUsr = executedOrders.filter(o => o.ric == ric && o.usr == usr)
-    val qty = execOrdersRicUsr.map { order =>
+    execOrdersRicUsr.map { order =>
       order.buySell match {
         case Buy => order.qty
         case Sell => -order.qty
       }
-    }
-    qty.sum
+    }.sum
   }
 }
