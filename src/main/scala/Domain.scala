@@ -14,15 +14,15 @@ case class Order(
     price: BigDecimal,
     usr: String) {
 
-  def matchOrder(o2: Order): Boolean = {
+  def isMatching(other: Order): Boolean = {
     val (sellPrice, buyPrice) = buySell match {
-      case Buy => (o2.price, price)
-      case Sell => (price, o2.price)
+      case Buy => (other.price, price)
+      case Sell => (price, other.price)
     }
 
-    buySell != o2.buySell &&
-      qty == o2.qty &&
-      ric == o2.ric &&
+    buySell != other.buySell &&
+      qty == other.qty &&
+      ric == other.ric &&
       sellPrice <= buyPrice
   }
 }

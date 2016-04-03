@@ -9,8 +9,8 @@ class ExchangeSpec extends Specification {
   This is a specification for an exchange system which matches orders on stocks. 
   
   The exchange should match order with the same price. $e1 
-  For a new sell order, match with order with the highest price. $e2 
-  For a new buy order, match with order with the lowest price. $e3
+  For a new sell order, it should match order with the highest price. $e2
+  For a new buy order, it should match order the lowest price. $e3
   Executed orders are removed from the set of open orders, $e11
   and added to the set of executed orders. $e16
   Unmatched orders are added to the set of open orders. $e12
@@ -45,7 +45,7 @@ class ExchangeSpec extends Specification {
   def e1 = {
     val openOrder = Order(1, Buy, Ric1, QtyOne, 1.0, Usr1)
     val exchange = Exchange(List(openOrder))
-    exchange.findMatch(Order(2, Sell, Ric1, QtyOne, 1.0, Usr1)) must beEqualTo(Some(openOrder))
+    exchange.matchOrder(Order(2, Sell, Ric1, QtyOne, 1.0, Usr1)) must beEqualTo(Some(openOrder))
   }
 
   def e2 = {
@@ -53,7 +53,7 @@ class ExchangeSpec extends Specification {
     val o2 = Order(2, Buy, Ric1, QtyOne, 3.0, Usr2)
     val o3 = Order(3, Buy, Ric1, QtyOne, 2.0, Usr2)
     val exchange = Exchange(List(o1, o2, o3))
-    exchange.findMatch(Order(4, Sell, Ric1, QtyOne, 1.0, Usr1)) must beEqualTo(Some(o2))
+    exchange.matchOrder(Order(4, Sell, Ric1, QtyOne, 1.0, Usr1)) must beEqualTo(Some(o2))
   }
 
   def e3 = {
@@ -61,43 +61,43 @@ class ExchangeSpec extends Specification {
     val o2 = Order(2, Sell, Ric1, QtyOne, 1.0, Usr2)
     val o3 = Order(3, Sell, Ric1, QtyOne, 2.0, Usr2)
     val exchange = Exchange(List(o1, o2, o3))
-    exchange.findMatch(Order(4, Buy, Ric1, QtyOne, 3.0, Usr1)) must beEqualTo(Some(o2))
+    exchange.matchOrder(Order(4, Buy, Ric1, QtyOne, 3.0, Usr1)) must beEqualTo(Some(o2))
   }
 
   def e4 = {
     val o1 = Order(1, Buy, Ric1, QtyOne, 1.0, Usr1)
     val o2 = Order(2, Sell, Ric1, QtyOne, 1.0, Usr2)
-    o1.matchOrder(o2) must beTrue
+    o1.isMatching(o2) must beTrue
   }
 
   def e7 = {
     val o1 = Order(1, Buy, Ric1, QtyOne, 1.0, Usr1)
     val o2 = Order(2, Buy, Ric1, QtyOne, 1.0, Usr2)
-    o1.matchOrder(o2) must beFalse
+    o1.isMatching(o2) must beFalse
   }
 
   def e5 = {
     val o1 = Order(1, Buy, Ric1, QtyOne, 1.0, Usr1)
     val o2 = Order(2, Sell, "ricOther", QtyOne, 1.0, Usr2)
-    o1.matchOrder(o2) must beFalse
+    o1.isMatching(o2) must beFalse
   }
 
   def e9 = {
     val o1 = Order(1, Buy, Ric1, QtyOne, 1.0, Usr1)
     val o2 = Order(2, Sell, Ric1, 2, 1.0, Usr2)
-    o1.matchOrder(o2) must beFalse
+    o1.isMatching(o2) must beFalse
   }
 
   def e6 = {
     val o1 = Order(1, Buy, Ric1, QtyOne, 2.0, Usr1)
     val o2 = Order(2, Sell, Ric1, QtyOne, 1.0, Usr1)
-    o1.matchOrder(o2) must beTrue
+    o1.isMatching(o2) must beTrue
   }
 
   def e10 = {
     val o1 = Order(1, Buy, Ric1, QtyOne, 1.0, Usr1)
     val o2 = Order(2, Sell, Ric1, QtyOne, 2.0, Usr1)
-    o1.matchOrder(o2) must beFalse
+    o1.isMatching(o2) must beFalse
   }
 
   def e11 = {
@@ -140,7 +140,7 @@ class ExchangeSpec extends Specification {
 
   def e15 = {
     val o1 = Order(1, Sell, Ric1, QtyOne, 3.0, Usr1)
-    val exchange = new Exchange(List(o1))
+    val exchange = Exchange(List(o1))
     val o = Order(2, Buy, Ric1, QtyOne, 3.0, Usr1)
     Exchange.addOrder(exchange, o).avgExecutionPrice(Ric1) must beEqualTo(3.0)
   }
@@ -148,23 +148,23 @@ class ExchangeSpec extends Specification {
   def e17 = {
     val o1 = Order(1, Sell, Ric1, QtyOne, 3.0, Usr1)
     val o2 = Order(2, Sell, Ric1, 2, 1.0, Usr2)
-    val exchange = new Exchange(List(o1, o2))
-    val newExchange = Exchange.addOrder(exchange, Order(3, Buy, Ric1, QtyOne, 3.0, Usr1))
-    Exchange.addOrder(newExchange, Order(4, Buy, Ric1, 2, 1.0, Usr1)).avgExecutionPrice(Ric1) must beEqualTo((BigDecimal.valueOf(5.0)) / 3)
+    val exchange1 = Exchange(List(o1, o2))
+    val exchange2 = Exchange.addOrder(exchange1, Order(3, Buy, Ric1, QtyOne, 3.0, Usr1))
+    Exchange.addOrder(exchange2, Order(4, Buy, Ric1, 2, 1.0, Usr1)).avgExecutionPrice(Ric1) must beEqualTo((BigDecimal.valueOf(5.0)) / 3)
   }
 
   def e18 = {
     val o1 = Order(1, Sell, Ric1, QtyOne, 3.0, Usr1)
     val o2 = Order(2, Sell, Ric1, 2, 1.0, Usr2)
-    val exchange = new Exchange(List(o1, o2))
-    val newExchange = Exchange.addOrder(exchange, Order(3, Buy, Ric1, QtyOne, 3.0, Usr2))
-    Exchange.addOrder(newExchange, Order(4, Buy, Ric1, 2, 1.0, Usr1)).executedQuantity(Ric1, Usr1) must beEqualTo(1)
+    val exchange1 = Exchange(List(o1, o2))
+    val exchange2 = Exchange.addOrder(exchange1, Order(3, Buy, Ric1, QtyOne, 3.0, Usr2))
+    Exchange.addOrder(exchange2, Order(4, Buy, Ric1, 2, 1.0, Usr1)).executedQuantity(Ric1, Usr1) must beEqualTo(1)
   }
 
   def e19 = {
     val o1 = Order(1, Sell, Ric1, QtyOne, 3.0, Usr1)
     val o2 = Order(2, Sell, Ric1, 2, 1.0, Usr2)
-    val exchange1 = new Exchange(List(o1, o2))
+    val exchange1 = Exchange(List(o1, o2))
     val exchange2 = Exchange.addOrder(exchange1, Order(3, Buy, Ric1, QtyOne, 3.0, Usr2))
     Exchange.addOrder(exchange2, Order(4, Buy, Ric1, 2, 1.0, Usr1)).executedQuantity(Ric1, Usr2) must beEqualTo(-1)
   }
