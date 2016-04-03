@@ -10,8 +10,13 @@ This Exchange coding solution has a standard Scala project layout:
 
 * `src/test/scala/ExchangeSpec.scala` contains specification and unit tests (Specs2)
 
-Point 1 of the assignment is implemented in `addOrder(stock: Exchange, order: Order): Exchange` function 
-that returns a new exchange with an updated order stock.  
+Point 1 of the assignment is implemented in 
+
+```
+   def addOrder(stock: Exchange, order: Order): Exchange  
+```
+
+The `addOrder` function returns a new `Exchange` with an updated order stock, to avoid maintaining and mutating state.   
  
 Functionality specified in points 2-4 is available through functions on the `Exchange` case class:
  
