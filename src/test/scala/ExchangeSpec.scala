@@ -21,7 +21,7 @@ class ExchangeSpec extends Specification {
   and sell price less than $e6 
   or equal to buy price. $e10 
   
-  Open interest is the total quantity of all open orders for the given RIC and direction at each price point: 
+  Open interest is the total quantity of all open orders for the given RIC and the direction at each price point: 
   multiple price points $e13 
   single price point    $e14
   
@@ -35,154 +35,155 @@ class ExchangeSpec extends Specification {
   
   
   """
-  val ric1 = "VOD.L"
-  val (usr1, usr2) = ("User1", "User2")
-  val qtyOne = 1
+  final val Ric1 = "VOD.L"
+  final val Usr1 = "User1"
+  final val Usr2 = "User2"
+  final val QtyOne = 1
 
   def e4 = {
     val exch = new Exchange
-    val o1 = Order(1, BuySell.Buy, ric1, qtyOne, 1.0, usr1)
-    val o2 = Order(2, BuySell.Sell, ric1, qtyOne, 1.0, usr2)
+    val o1 = Order(1, BuySell.Buy, Ric1, QtyOne, 1.0, Usr1)
+    val o2 = Order(2, BuySell.Sell, Ric1, QtyOne, 1.0, Usr2)
     exch.matchOrder(o1, o2) must beTrue
   }
 
   def e7 = {
     val exch = new Exchange
-    val o1 = Order(1, BuySell.Buy, ric1, qtyOne, 1.0, usr1)
-    val o2 = Order(2, BuySell.Buy, ric1, qtyOne, 1.0, usr2)
+    val o1 = Order(1, BuySell.Buy, Ric1, QtyOne, 1.0, Usr1)
+    val o2 = Order(2, BuySell.Buy, Ric1, QtyOne, 1.0, Usr2)
     exch.matchOrder(o1, o2) must beFalse
   }
 
   def e5 = {
     val exch = new Exchange
-    val o1 = Order(1, BuySell.Buy, ric1, qtyOne, 1.0, usr1)
-    val o2 = Order(2, BuySell.Sell, "ricOther", qtyOne, 1.0, usr2)
+    val o1 = Order(1, BuySell.Buy, Ric1, QtyOne, 1.0, Usr1)
+    val o2 = Order(2, BuySell.Sell, "ricOther", QtyOne, 1.0, Usr2)
     exch.matchOrder(o1, o2) must beFalse
   }
 
   def e9 = {
     val exch = new Exchange
-    val o1 = Order(1, BuySell.Buy, ric1, qtyOne, 1.0, usr1)
-    val o2 = Order(2, BuySell.Sell, ric1, 2, 1.0, usr2)
+    val o1 = Order(1, BuySell.Buy, Ric1, QtyOne, 1.0, Usr1)
+    val o2 = Order(2, BuySell.Sell, Ric1, 2, 1.0, Usr2)
     exch.matchOrder(o1, o2) must beFalse
   }
 
   def e6 = {
     val exch = new Exchange
-    val o1 = Order(1, BuySell.Buy, ric1, qtyOne, 2.0, usr1)
-    val o2 = Order(2, BuySell.Sell, ric1, qtyOne, 1.0, usr1)
+    val o1 = Order(1, BuySell.Buy, Ric1, QtyOne, 2.0, Usr1)
+    val o2 = Order(2, BuySell.Sell, Ric1, QtyOne, 1.0, Usr1)
     exch.matchOrder(o1, o2) must beTrue
   }
 
   def e10 = {
     val exch = new Exchange
-    val o1 = Order(1, BuySell.Buy, ric1, qtyOne, 1.0, usr1)
-    val o2 = Order(2, BuySell.Sell, ric1, qtyOne, 2.0, usr1)
+    val o1 = Order(1, BuySell.Buy, Ric1, QtyOne, 1.0, Usr1)
+    val o2 = Order(2, BuySell.Sell, Ric1, QtyOne, 2.0, Usr1)
     exch.matchOrder(o1, o2) must beFalse
   }
 
   def e1 = {
-    val o1 = Order(1, BuySell.Buy, ric1, qtyOne, 1.0, usr1)
+    val o1 = Order(1, BuySell.Buy, Ric1, QtyOne, 1.0, Usr1)
     val exch = new Exchange(List(o1))
-    val o = Order(2, BuySell.Sell, ric1, qtyOne, 1.0, usr1)
+    val o = Order(2, BuySell.Sell, Ric1, QtyOne, 1.0, Usr1)
     exch.findMatch(o) must beEqualTo(Some(o1))
   }
 
   def e2 = {
-    val o1 = Order(1, BuySell.Buy, ric1, qtyOne, 1.0, usr1)
-    val o2 = Order(2, BuySell.Buy, ric1, qtyOne, 3.0, usr2)
-    val o3 = Order(3, BuySell.Buy, ric1, qtyOne, 2.0, usr2)
+    val o1 = Order(1, BuySell.Buy, Ric1, QtyOne, 1.0, Usr1)
+    val o2 = Order(2, BuySell.Buy, Ric1, QtyOne, 3.0, Usr2)
+    val o3 = Order(3, BuySell.Buy, Ric1, QtyOne, 2.0, Usr2)
     val exch = new Exchange(List(o1, o2, o3))
-    val o = Order(4, BuySell.Sell, ric1, qtyOne, 1.0, usr1)
+    val o = Order(4, BuySell.Sell, Ric1, QtyOne, 1.0, Usr1)
     val v = exch.findMatch(o)
     v must beEqualTo(Some(o2))
   }
 
   def e3 = {
-    val o1 = Order(1, BuySell.Sell, ric1, qtyOne, 3.0, usr1)
-    val o2 = Order(2, BuySell.Sell, ric1, qtyOne, 1.0, usr2)
-    val o3 = Order(3, BuySell.Sell, ric1, qtyOne, 2.0, usr2)
+    val o1 = Order(1, BuySell.Sell, Ric1, QtyOne, 3.0, Usr1)
+    val o2 = Order(2, BuySell.Sell, Ric1, QtyOne, 1.0, Usr2)
+    val o3 = Order(3, BuySell.Sell, Ric1, QtyOne, 2.0, Usr2)
     val exch = new Exchange(List(o1, o2, o3))
-    val o = Order(4, BuySell.Buy, ric1, qtyOne, 3.0, usr1)
+    val o = Order(4, BuySell.Buy, Ric1, QtyOne, 3.0, Usr1)
     exch.findMatch(o) must beEqualTo(Some(o2))
   }
 
   def e11 = {
-    val o1 = Order(1, BuySell.Sell, ric1, qtyOne, 3.0, usr1)
-    val o2 = Order(2, BuySell.Sell, ric1, qtyOne, 1.0, usr1)
-    val o3 = Order(3, BuySell.Sell, ric1, qtyOne, 2.0, usr1)
+    val o1 = Order(1, BuySell.Sell, Ric1, QtyOne, 3.0, Usr1)
+    val o2 = Order(2, BuySell.Sell, Ric1, QtyOne, 1.0, Usr1)
+    val o3 = Order(3, BuySell.Sell, Ric1, QtyOne, 2.0, Usr1)
     val exch = new Exchange(List(o1, o2, o3))
-    val o = Order(4, BuySell.Buy, ric1, qtyOne, 3.0, usr1)
+    val o = Order(4, BuySell.Buy, Ric1, QtyOne, 3.0, Usr1)
     val openOrders = exch.addOrder(o)
     openOrders must beEqualTo(List(o1, o3))
   }
 
   def e16 = {
-    val o1 = Order(1, BuySell.Sell, ric1, qtyOne, 3.0, usr1)
-    val o2 = Order(2, BuySell.Sell, "otherRic", qtyOne, 1.0, usr1)
-    val o3 = Order(3, BuySell.Sell, "otherRic", qtyOne, 2.0, usr1)
+    val o1 = Order(1, BuySell.Sell, Ric1, QtyOne, 3.0, Usr1)
+    val o2 = Order(2, BuySell.Sell, "otherRic", QtyOne, 1.0, Usr1)
+    val o3 = Order(3, BuySell.Sell, "otherRic", QtyOne, 2.0, Usr1)
     val exch = new Exchange(List(o1, o2, o3))
-    val o = Order(4, BuySell.Buy, ric1, qtyOne, 3.0, usr1)
+    val o = Order(4, BuySell.Buy, Ric1, QtyOne, 3.0, Usr1)
     val openOrders = exch.addOrder(o)
     exch.executedOrders must beEqualTo(List(o1, o))
   }
 
   def e12 = {
-    val o1 = Order(1, BuySell.Sell, ric1, qtyOne, 3.0, usr1)
-    val o2 = Order(2, BuySell.Sell, ric1, qtyOne, 1.0, usr2)
-    val o3 = Order(3, BuySell.Sell, ric1, qtyOne, 2.0, usr2)
+    val o1 = Order(1, BuySell.Sell, Ric1, QtyOne, 3.0, Usr1)
+    val o2 = Order(2, BuySell.Sell, Ric1, QtyOne, 1.0, Usr2)
+    val o3 = Order(3, BuySell.Sell, Ric1, QtyOne, 2.0, Usr2)
     val exch = new Exchange(List(o1, o2, o3))
-    val o = Order(4, BuySell.Buy, "ricOther", qtyOne, 3.0, usr1)
+    val o = Order(4, BuySell.Buy, "ricOther", QtyOne, 3.0, Usr1)
     val openOrders = exch.addOrder(o)
     openOrders must beEqualTo(List(o, o1, o2, o3))
   }
 
   def e13 = {
-    val o1 = Order(1, BuySell.Sell, ric1, qtyOne, 3.0, usr1)
-    val o2 = Order(2, BuySell.Sell, ric1, qtyOne, 1.0, usr2)
+    val o1 = Order(1, BuySell.Sell, Ric1, QtyOne, 3.0, Usr1)
+    val o2 = Order(2, BuySell.Sell, Ric1, QtyOne, 1.0, Usr2)
     val exch = new Exchange(List(o1, o2))
-    exch.openInterest(ric1, BuySell.Sell) must beEqualTo(Map((3.0, qtyOne), (1.0, qtyOne)))
+    exch.openInterest(Ric1, BuySell.Sell) must beEqualTo(Map((3.0, QtyOne), (1.0, QtyOne)))
   }
 
   def e14 = {
-    val o1 = Order(1, BuySell.Sell, ric1, qtyOne, 1.0, usr1)
-    val o2 = Order(2, BuySell.Sell, ric1, qtyOne, 1.0, usr2)
+    val o1 = Order(1, BuySell.Sell, Ric1, QtyOne, 1.0, Usr1)
+    val o2 = Order(2, BuySell.Sell, Ric1, QtyOne, 1.0, Usr2)
     val exch = new Exchange(List(o1, o2))
-    exch.openInterest(ric1, BuySell.Sell) must beEqualTo(Map(BigDecimal.valueOf(1.0) -> 2))
+    exch.openInterest(Ric1, BuySell.Sell) must beEqualTo(Map(BigDecimal.valueOf(1.0) -> 2))
   }
 
   def e15 = {
-    val o1 = Order(1, BuySell.Sell, ric1, qtyOne, 3.0, usr1)
+    val o1 = Order(1, BuySell.Sell, Ric1, QtyOne, 3.0, Usr1)
     val exch = new Exchange(List(o1))
-    val o = Order(2, BuySell.Buy, ric1, qtyOne, 3.0, usr1)
+    val o = Order(2, BuySell.Buy, Ric1, QtyOne, 3.0, Usr1)
     exch.addOrder(o)
-    exch.avgExecPrice(ric1) must beEqualTo(3.0)
+    exch.avgExecPrice(Ric1) must beEqualTo(3.0)
   }
 
   def e17 = {
-    val o1 = Order(1, BuySell.Sell, ric1, qtyOne, 3.0, usr1)
-    val o2 = Order(2, BuySell.Sell, ric1, 2, 1.0, usr2)
+    val o1 = Order(1, BuySell.Sell, Ric1, QtyOne, 3.0, Usr1)
+    val o2 = Order(2, BuySell.Sell, Ric1, 2, 1.0, Usr2)
     val exch = new Exchange(List(o1, o2))
-    exch.addOrder(Order(3, BuySell.Buy, ric1, qtyOne, 3.0, usr1))
-    exch.addOrder(Order(4, BuySell.Buy, ric1, 2, 1.0, usr1))
-    exch.avgExecPrice(ric1) must beEqualTo((BigDecimal.valueOf(5.0)) / 3)
+    exch.addOrder(Order(3, BuySell.Buy, Ric1, QtyOne, 3.0, Usr1))
+    exch.addOrder(Order(4, BuySell.Buy, Ric1, 2, 1.0, Usr1))
+    exch.avgExecPrice(Ric1) must beEqualTo((BigDecimal.valueOf(5.0)) / 3)
   }
 
   def e18 = {
-    val o1 = Order(1, BuySell.Sell, ric1, qtyOne, 3.0, usr1)
-    val o2 = Order(2, BuySell.Sell, ric1, 2, 1.0, usr2)
+    val o1 = Order(1, BuySell.Sell, Ric1, QtyOne, 3.0, Usr1)
+    val o2 = Order(2, BuySell.Sell, Ric1, 2, 1.0, Usr2)
     val exch = new Exchange(List(o1, o2))
-    exch.addOrder(Order(3, BuySell.Buy, ric1, qtyOne, 3.0, usr2))
-    exch.addOrder(Order(4, BuySell.Buy, ric1, 2, 1.0, usr1))
-    exch.totalExecQty(ric1, usr1) must beEqualTo(1)
+    exch.addOrder(Order(3, BuySell.Buy, Ric1, QtyOne, 3.0, Usr2))
+    exch.addOrder(Order(4, BuySell.Buy, Ric1, 2, 1.0, Usr1))
+    exch.totalExecQty(Ric1, Usr1) must beEqualTo(1)
   }
 
   def e19 = {
-    val o1 = Order(1, BuySell.Sell, ric1, qtyOne, 3.0, usr1)
-    val o2 = Order(2, BuySell.Sell, ric1, 2, 1.0, usr2)
+    val o1 = Order(1, BuySell.Sell, Ric1, QtyOne, 3.0, Usr1)
+    val o2 = Order(2, BuySell.Sell, Ric1, 2, 1.0, Usr2)
     val exch = new Exchange(List(o1, o2))
-    exch.addOrder(Order(3, BuySell.Buy, ric1, qtyOne, 3.0, usr2))
-    exch.addOrder(Order(4, BuySell.Buy, ric1, 2, 1.0, usr1))
-    exch.totalExecQty(ric1, usr2) must beEqualTo(-1)
+    exch.addOrder(Order(3, BuySell.Buy, Ric1, QtyOne, 3.0, Usr2))
+    exch.addOrder(Order(4, BuySell.Buy, Ric1, 2, 1.0, Usr1))
+    exch.totalExecQty(Ric1, Usr2) must beEqualTo(-1)
   }
 }

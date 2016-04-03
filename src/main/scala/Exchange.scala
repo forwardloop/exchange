@@ -2,6 +2,7 @@ import BuySell._
 
 class Exchange(var openOrders: List[Order] = Nil, var executedOrders: List[Order] = Nil) {
 
+  //exchange state as in and out params. Remove vars
   def addOrder(order: Order): List[Order] = {
     findMatch(order) match {
       case Some(matchedOrder) => {
