@@ -2,12 +2,12 @@ import Direction._
 
 object Exchange {
 
-  def addOrder(stock: Stock, order: Order): Stock = {
+  def addOrder(stock: Exchange, order: Order): Exchange = {
     stock.findMatch(order) match {
       case Some(matchedOrder) => {
         val openOrders = stock.openOrders.filter(_.id != matchedOrder.id)
         val executedOrders = order :: matchedOrder.copy(price = order.price) :: stock.executedOrders
-        Stock(openOrders, executedOrders)
+        Exchange(openOrders, executedOrders)
       }
       case None => stock.copy(openOrders = order :: stock.openOrders)
     }
@@ -26,7 +26,7 @@ object Exchange {
   }
 }
 
-case class Stock(openOrders: List[Order] = Nil, executedOrders: List[Order] = Nil) {
+case class Exchange(openOrders: List[Order] = Nil, executedOrders: List[Order] = Nil) {
 
   def findMatch(order: Order): Option[Order] = {
 
