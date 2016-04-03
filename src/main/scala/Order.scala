@@ -1,13 +1,13 @@
-import BuySell.BuySell
+import Direction.Direction
 
-object BuySell extends Enumeration {
-  type BuySell = Value
+object Direction extends Enumeration {
+  type Direction = Value
   val Buy, Sell = Value
 }
 
 case class Order(
   id: Int,
-  buySell: BuySell,
+  buySell: Direction,
   ric: String,
   qty: Int,
   price: BigDecimal,

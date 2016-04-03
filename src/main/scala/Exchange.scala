@@ -1,4 +1,6 @@
-import BuySell._
+import Direction._
+
+case class Stock(openOrders: List[Order] = Nil, executedOrders: List[Order] = Nil)
 
 class Exchange(var openOrders: List[Order] = Nil, var executedOrders: List[Order] = Nil) {
 
@@ -39,20 +41,21 @@ class Exchange(var openOrders: List[Order] = Nil, var executedOrders: List[Order
       .headOption
   }
 
-  def openInterest(ric: String, buySell: BuySell): Map[BigDecimal, Int] = {
-    val orders = openOrders.filter(o => o.buySell == buySell && o.ric == ric)
-    val groupedByPrice = orders.groupBy(_.price)
-    groupedByPrice.map(t => (t._1, t._2.foldLeft(0)((a, order) => a + order.qty)))
+  def openInterest(ric: String, buySell: Direction): Map[BigDecimal, Int] = {
+    val openOrdersDirectionRic = openOrders.filter(o => o.buySell == buySell && o.ric == ric)
+    openOrdersDirectionRic.groupBy(_.price).map {
+      case (price, ordersAtPrice) => (price, ordersAtPrice.map(_.qty).sum)
+    }
   }
 
-  def avgExecPrice(ric: String): BigDecimal = {
+  def avgExecutionPrice(ric: String): BigDecimal = {
     val execOrdersRic = executedOrders.filter(_.ric == ric)
     val qtyTotal = execOrdersRic.map(_.qty).sum
     val priceTotal = execOrdersRic.map(o => o.qty * o.price).sum
     priceTotal / qtyTotal
   }
 
-  def totalExecQty(ric: String, usr: String): Int = {
+  def executedQuantity(ric: String, usr: String): Int = {
     val execOrdersRicUsr = executedOrders.filter(o => o.ric == ric && o.usr == usr)
     execOrdersRicUsr.map { order =>
       order.buySell match {
