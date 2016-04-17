@@ -28,7 +28,7 @@ class ExampleSpec extends Specification {
     "add order 2: BUY 1000 VOD.L @ 100.2 User2" in {
       exch2.openInterest(VodLRic, Buy) must beEmpty
       exch2.openInterest(VodLRic, Sell) must beEmpty
-      exch2.avgExecutionPrice(VodLRic) must beEqualTo(100.2)
+      exch2.averageExecutionPrice(VodLRic) must beEqualTo(100.2)
       exch2.executedQuantity(VodLRic, Usr1) must beEqualTo(-1000)
       exch2.executedQuantity(VodLRic, Usr2) must beEqualTo(1000)
     }
@@ -38,7 +38,7 @@ class ExampleSpec extends Specification {
       openInterest must have size 1
       openInterest(99) must beEqualTo(1000)
       exch3.openInterest(VodLRic, Sell) must beEmpty
-      exch3.avgExecutionPrice(VodLRic) must beEqualTo(100.2)
+      exch3.averageExecutionPrice(VodLRic) must beEqualTo(100.2)
       exch3.executedQuantity(VodLRic, Usr1) must beEqualTo(-1000)
       exch3.executedQuantity(VodLRic, Usr2) must beEqualTo(1000)
     }
@@ -49,7 +49,7 @@ class ExampleSpec extends Specification {
       openInterestBuy(99) must beEqualTo(1000)
       openInterestBuy(101) must beEqualTo(1000)
       exch4.openInterest(VodLRic, Sell) must beEmpty
-      exch4.avgExecutionPrice(VodLRic) must beEqualTo(100.2)
+      exch4.averageExecutionPrice(VodLRic) must beEqualTo(100.2)
       exch4.executedQuantity(VodLRic, Usr1) must beEqualTo(-1000)
       exch4.executedQuantity(VodLRic, Usr2) must beEqualTo(1000)
     }
@@ -62,7 +62,7 @@ class ExampleSpec extends Specification {
       val openInterestSell: Map[BigDecimal, Int] = exch5.openInterest(VodLRic, Sell)
       openInterestSell must have size 1
       openInterestSell(102) must beEqualTo(500)
-      exch5.avgExecutionPrice(VodLRic) must beEqualTo(100.2)
+      exch5.averageExecutionPrice(VodLRic) must beEqualTo(100.2)
       exch5.executedQuantity(VodLRic, Usr1) must beEqualTo(-1000)
       exch5.executedQuantity(VodLRic, Usr2) must beEqualTo(1000)
     }
@@ -73,7 +73,7 @@ class ExampleSpec extends Specification {
       openInterestBuy(99) must beEqualTo(1000)
       openInterestBuy(101) must beEqualTo(1000)
       exch6.openInterest(VodLRic, Sell) must beEmpty
-      exch6.avgExecutionPrice(VodLRic).setScale(4, BigDecimal.RoundingMode.HALF_UP) must beEqualTo(101.1333)
+      exch6.averageExecutionPrice(VodLRic).setScale(4, BigDecimal.RoundingMode.HALF_UP) must beEqualTo(101.1333)
       exch6.executedQuantity(VodLRic, Usr1) must beEqualTo(-500)
       exch6.executedQuantity(VodLRic, Usr2) must beEqualTo(500)
     }
@@ -83,7 +83,7 @@ class ExampleSpec extends Specification {
       openInterestBuy must have size 1
       openInterestBuy(99) must beEqualTo(1000)
       exch7.openInterest(VodLRic, Sell) must beEmpty
-      exch7.avgExecutionPrice(VodLRic).setScale(4, BigDecimal.RoundingMode.HALF_UP) must beEqualTo(99.88)
+      exch7.averageExecutionPrice(VodLRic).setScale(4, BigDecimal.RoundingMode.HALF_UP) must beEqualTo(99.88)
       exch7.executedQuantity(VodLRic, Usr1) must beEqualTo(500)
       exch7.executedQuantity(VodLRic, Usr2) must beEqualTo(-500)
     }

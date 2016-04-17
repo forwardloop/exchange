@@ -2,7 +2,7 @@
 
 [Coding challenge](./doc/CHALLENGE.md)
 
-## Design Decisions & Issues
+## Design Decisions
 
 This Exchange coding solution has a standard Scala project layout:
 
@@ -25,7 +25,7 @@ Functionality specified in points 2-4 is available through functions on the `Exc
 ``` 
    def openInterest(ric: String, buySell: Direction): Map[BigDecimal, Int] 
    
-   def avgExecutionPrice(ric: String): BigDecimal
+   def averageExecutionPrice(ric: String): BigDecimal
      
    def executedQuantity(ric: String, usr: String): Int   
 ```

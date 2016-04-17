@@ -141,7 +141,7 @@ class ExchangeSpec extends Specification {
     val o1 = Order(1, Sell, Ric1, QtyOne, PriceOne * 3, Usr1)
     val exchange = Exchange(List(o1))
     val o = Order(2, Buy, Ric1, QtyOne, PriceOne * 3, Usr1)
-    Exchange.addOrder(exchange, o).avgExecutionPrice(Ric1) must beEqualTo(3.0)
+    Exchange.addOrder(exchange, o).averageExecutionPrice(Ric1) must beEqualTo(3.0)
   }
 
   def e17 = {
@@ -149,7 +149,7 @@ class ExchangeSpec extends Specification {
     val o2 = Order(2, Sell, Ric1, 2, PriceOne, Usr2)
     val exchange1 = Exchange(List(o1, o2))
     val exchange2 = Exchange.addOrder(exchange1, Order(3, Buy, Ric1, QtyOne, PriceOne * 3, Usr1))
-    Exchange.addOrder(exchange2, Order(4, Buy, Ric1, 2, PriceOne, Usr1)).avgExecutionPrice(Ric1) must beEqualTo((BigDecimal.valueOf(5.0)) / 3)
+    Exchange.addOrder(exchange2, Order(4, Buy, Ric1, 2, PriceOne, Usr1)).averageExecutionPrice(Ric1) must beEqualTo((BigDecimal.valueOf(5.0)) / 3)
   }
 
   def e18 = {

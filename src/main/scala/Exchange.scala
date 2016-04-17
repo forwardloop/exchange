@@ -2,14 +2,14 @@ import Direction._
 
 object Exchange {
 
-  def addOrder(stock: Exchange, order: Order): Exchange = {
-    stock.matchOrder(order) match {
-      case Some(matchedOrder) =>
-        val openOrders = stock.openOrders.filter(_.id != matchedOrder.id)
-        val executedOrders = order :: matchedOrder.copy(price = order.price) :: stock.executedOrders
-        Exchange(openOrders, executedOrders)
-      case None => stock.copy(openOrders = order :: stock.openOrders)
-    }
+  def addOrder(stock: Exchange, order: Order): Exchange = stock.matchOrder(order) match {
+
+    case Some(matchedOrder) =>
+      val openOrders = stock.openOrders.filter(_.id != matchedOrder.id)
+      val executedOrders = order :: matchedOrder.copy(price = order.price) :: stock.executedOrders
+      Exchange(openOrders, executedOrders)
+
+    case None => stock.copy(openOrders = order :: stock.openOrders)
   }
 }
 
@@ -35,7 +35,7 @@ case class Exchange(openOrders: List[Order] = Nil, executedOrders: List[Order] =
     }
   }
 
-  def avgExecutionPrice(ric: String): BigDecimal = {
+  def averageExecutionPrice(ric: String): BigDecimal = {
     val execOrdersRic = executedOrders.filter(_.ric == ric)
     val qtyTotal = execOrdersRic.map(_.qty).sum
     val priceTotal = execOrdersRic.map(o => o.qty * o.price).sum
