@@ -4,11 +4,10 @@ object Exchange {
 
   def addOrder(stock: Exchange, order: Order): Exchange = {
     stock.matchOrder(order) match {
-      case Some(matchedOrder) => {
+      case Some(matchedOrder) =>
         val openOrders = stock.openOrders.filter(_.id != matchedOrder.id)
         val executedOrders = order :: matchedOrder.copy(price = order.price) :: stock.executedOrders
         Exchange(openOrders, executedOrders)
-      }
       case None => stock.copy(openOrders = order :: stock.openOrders)
     }
   }
@@ -23,7 +22,8 @@ case class Exchange(openOrders: List[Order] = Nil, executedOrders: List[Order] =
       case Sell => o1.price <= o2.price
     }
 
-    openOrders.filter(openOrder => order.isMatching(openOrder))
+    openOrders
+      .filter(openOrder => order.isMatching(openOrder))
       .sortWith(sort)
       .headOption
   }
