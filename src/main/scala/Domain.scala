@@ -7,7 +7,6 @@ object Direction extends Enumeration {
 import Direction._
 
 case class Order(
-    id: Int,
     buySell: Direction,
     ric: String,
     qty: Int,

@@ -5,7 +5,7 @@ object Exchange {
   def addOrder(stock: Exchange, order: Order): Exchange = stock.matchOrder(order) match {
 
     case Some(matchedOrder) =>
-      val openOrders = stock.openOrders.filter(_.id != matchedOrder.id)
+      val openOrders = stock.openOrders.filterNot(_ == matchedOrder)
       val executedOrders = order :: matchedOrder.copy(price = order.price) :: stock.executedOrders
       Exchange(openOrders, executedOrders)
 

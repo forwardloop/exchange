@@ -7,13 +7,13 @@ class ExampleSpec extends Specification {
   final val Usr1 = "User1"
   final val Usr2 = "User2"
 
-  private val exch1 = Exchange.addOrder(Exchange(), Order(1, Sell, VodLRic, 1000, 100.2, Usr1))
-  private val exch2 = Exchange.addOrder(exch1, Order(2, Buy, VodLRic, 1000, 100.2, Usr2))
-  private val exch3 = Exchange.addOrder(exch2, Order(3, Buy, VodLRic, 1000, 99, Usr1))
-  private val exch4 = Exchange.addOrder(exch3, Order(4, Buy, VodLRic, 1000, 101, Usr1))
-  private val exch5 = Exchange.addOrder(exch4, Order(5, Sell, VodLRic, 500, 102, Usr2))
-  private val exch6 = Exchange.addOrder(exch5, Order(6, Buy, VodLRic, 500, 103, Usr1))
-  private val exch7 = Exchange.addOrder(exch6, Order(7, Sell, VodLRic, 1000, 98, Usr2))
+  private val exch1 = Exchange.addOrder(Exchange(), Order(Sell, VodLRic, 1000, 100.2, Usr1))
+  private val exch2 = Exchange.addOrder(exch1, Order(Buy, VodLRic, 1000, 100.2, Usr2))
+  private val exch3 = Exchange.addOrder(exch2, Order(Buy, VodLRic, 1000, 99, Usr1))
+  private val exch4 = Exchange.addOrder(exch3, Order(Buy, VodLRic, 1000, 101, Usr1))
+  private val exch5 = Exchange.addOrder(exch4, Order(Sell, VodLRic, 500, 102, Usr2))
+  private val exch6 = Exchange.addOrder(exch5, Order(Buy, VodLRic, 500, 103, Usr1))
+  private val exch7 = Exchange.addOrder(exch6, Order(Sell, VodLRic, 1000, 98, Usr2))
 
   "Exchange" should {
 
