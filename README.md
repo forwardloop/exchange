@@ -1,26 +1,16 @@
-## Task
+## [Task](./doc/INSTRUCTION.md)
 
-[Coding challenge](./doc/CHALLENGE.md)
+## Design
 
-## Design Decisions
-
-This Exchange coding solution has a standard Scala project layout:
-
-* `src/main/scala/Exchange.scala` contains implementation of the exchange
-
-* `src/test/scala/ExchangeSpec.scala` contains specification and unit tests (Specs2)
-
-* `src/test/scala/ExampleSpec.scala` validates against the example provided with instruction
-
-Point 1 of the assignment is implemented in 
+Point 1 is implemented in 
 
 ```
    def addOrder(stock: Exchange, order: Order): Exchange  
 ```
 
-The `addOrder` function returns a new `Exchange` with an updated order stock, to avoid maintaining and mutating state.   
+`addOrder` returns a new `Exchange` with an updated order stock to avoid maintaining and mutating state.   
  
-Functionality specified in points 2-4 is available through functions on the `Exchange` case class:
+Functionality from points 2-4 is available on the `Exchange` case class:
  
 ``` 
    def openInterest(ric: String, buySell: Direction): Map[BigDecimal, Int] 
