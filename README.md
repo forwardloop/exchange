@@ -1,6 +1,6 @@
 An exchange system which matches orders on stocks. The functionality is:
 
-1. Add an order
+1. Adds an order
   * An order consists of direction (buy/sell), RIC (Reuters Instrument Code), quantity, price and user
   * When an order is added, it is compared against existing open orders to see whether it can be 
     matched. Two orders match if they have opposing directions, matching RICs and quantities, and if the
